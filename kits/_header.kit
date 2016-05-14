@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><!-- $title --></title>
+	<meta name="description" content="A demo of delivering Infinite Scrolling experience with HTML5 History.">
+
+	<!-- PrismJS Stylesheet -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.4.1/themes/prism.min.css">
+
+	<!-- Main Stylesheet -->
+	<link rel="stylesheet" href="assets/css/style.css">
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.4.1/prism.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-visible/1.2.0/jquery.visible.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/history.js/1.8/bundled/html4+html5/jquery.history.js"></script>
+
+	<script>
+	window.SiteAPI = {
+		"postCount": 5,
+		"posts": [{
+			"id": 1,
+			"address": "post-one",
+			"title": "Post One"
+		}, {
+			"id": 2,
+			"address": "post-two",
+			"title": "Post Two"
+		}, {
+			"id": 3,
+			"address": "post-three",
+			"title": "Post Three"
+		}, {
+			"id": 4,
+			"address": "post-four",
+			"title": "Post Four"
+		}, {
+			"id": 5,
+			"address": "post-five",
+			"title": "Post Five"
+		}]
+	};
+	</script>
+</head>
+<body>
+	<div class="site demo-content">
+		<header class="masthead" id="topbar">
+			<div class="container">
+				<a class="logo" href="#">Acme</a>
+			</div>
+		</header>
+		<div class="content" id="main">

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Post Four</title>
+	<meta name="description" content="A demo of delivering Infinite Scrolling experience with HTML5 History.">
+
+	<!-- PrismJS Stylesheet -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.4.1/themes/prism.min.css">
+
+	<!-- Main Stylesheet -->
+	<link rel="stylesheet" href="assets/css/style.css">
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.4.1/prism.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-visible/1.2.0/jquery.visible.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/history.js/1.8/bundled/html4+html5/jquery.history.js"></script>
+
+	<script>
+	window.SiteAPI = {
+		"postCount": 5,
+		"posts": [{
+			"id": 1,
+			"address": "post-one",
+			"title": "Post One"
+		}, {
+			"id": 2,
+			"address": "post-two",
+			"title": "Post Two"
+		}, {
+			"id": 3,
+			"address": "post-three",
+			"title": "Post Three"
+		}, {
+			"id": 4,
+			"address": "post-four",
+			"title": "Post Four"
+		}, {
+			"id": 5,
+			"address": "post-five",
+			"title": "Post Five"
+		}]
+	};
+	</script>
+</head>
+<body>
+	<div class="site demo-content">
+		<header class="masthead" id="topbar">
+			<div class="container">
+				<a class="logo" href="#">Acme</a>
+			</div>
+		</header>
+		<div class="content" id="main"><article 
+	class="article" 
+	id="article-4"
+	data-article='{ "id": 4 }'>
+	<div class="container">
+		<header class="article__header">
+			<h1 class="article__headline">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h1>
+		</header>
+		<div class="article__content">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi maiores alias pariatur modi adipisci necessitatibus sunt recusandae, voluptate, aspernatur voluptatum molestiae, quia qui earum nemo quod totam commodi ullam reprehenderit.</p>
+
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit odio quos, quidem iure mollitia ducimus! Velit ullam architecto asperiores? Eos aut aliquid nam ullam debitis sit, maiores, dolore dolorum esse ea consectetur animi, obcaecati in mollitia corporis fugit velit facilis, quaerat repudiandae qui laboriosam. Eos nemo modi, laboriosam eligendi aspernatur?</p>
+
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam tenetur, voluptas eos necessitatibus quae autem ex architecto corporis et earum.</p>
+
+<pre>
+	<code class="language-css">
+	#sidebar {
+		position: -webkit-sticky;  // required for Safari
+		position: sticky;
+		top: 0; // required as well.
+	}   
+	</code>
+</pre>
+
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, numquam accusantium amet temporibus, quaerat tempore nihil soluta ullam neque debitis at obcaecati officiis sapiente possimus reprehenderit quidem animi nulla iusto!</p>
+
+			<figure>
+				<picture>
+					<source media="(max-width: 640px)"
+					srcset="assets/img/image-small.jpg">
+					<img src="assets/img/image.jpg" height="427" width="640" alt="Image 1">
+				</picture>
+				<figcaption>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, eos.</figcaption>
+			</figure>
+
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam obcaecati dolorum, doloribus ab vitae! Maxime consectetur esse et, voluptate eius nostrum, cum numquam, fuga aperiam molestias alias mollitia magnam autem corporis eveniet accusantium reiciendis! Fugit, neque ut molestias aliquid, voluptates fugiat. Alias at ad consequatur repellat modi autem, voluptatem perspiciatis sint id officia dolorem, quas quia corporis minima accusantium nam?</p>
+		</div>
+	</div>
+</article>
+
+		</div><!-- /.content  -->
+		<footer class="footer" id="footer">
+			<div class="container">
+				<nav class="nav">
+					<ul class="nav-list">
+						<li class="nav-list__item"><a class="nav-list__link" href="#">About</a></li>
+						<li class="nav-list__item"><a class="nav-list__link" href="#">Contact</a></li>
+						<li class="nav-list__item"><a class="nav-list__link" href="#">Privacy</a></li>
+					</ul>
+				</nav>
+			</div>
+		</footer>
+	</div>
+
+	<!-- <script src="assets/js/script.pkg.js"></script> -->
+	<script src="assets/js/script.jquery.pkg.js"></script>
+	<script>
+		( function( $, undefined ) {
+			$( "#main" ).neverEnding({
+				data : {
+					"postCount": 5,
+					"posts": [{
+						"id": 1,
+						"address": "post-one",
+						"title": "Post One"
+					}, {
+						"id": 2,
+						"address": "post-two",
+						"title": "Post Two"
+					}, {
+						"id": 3,
+						"address": "post-three",
+						"title": "Post Three"
+					}, {
+						"id": 4,
+						"address": "post-four",
+						"title": "Post Four"
+					}, {
+						"id": 5,
+						"address": "post-five",
+						"title": "Post Five"
+					}]
+				},
+			});
+		})( jQuery );
+	</script>
+</body>
+</html>
