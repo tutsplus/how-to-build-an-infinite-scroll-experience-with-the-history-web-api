@@ -91,7 +91,10 @@
 
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, numquam accusantium amet temporibus, quaerat tempore nihil soluta ullam neque debitis at obcaecati officiis sapiente possimus reprehenderit quidem animi nulla iusto!</p>
 		</div>
-	</div>
+		<aside class="article__sidebar">
+	<div class="widget widget-1"></div>
+	<div class="widget widget-2"></div>
+</aside>	</div>
 </article>
 
 		</div><!-- /.content  -->
@@ -108,14 +111,13 @@
 		</footer>
 	</div>
 
-	<!-- <script src="assets/js/script.pkg.js"></script> -->
 	<script src="assets/js/script.jquery.pkg.js"></script>
 	<script>
 		( function( $, undefined ) {
-			$( "#main" ).neverEnding({
-				data : {
-					"postCount": 5,
-					"posts": [{
+
+			$( document ).ready( function() {
+				$( "#main" ).keepScrolling({
+					data : [{
 						"id": 1,
 						"address": "post-one",
 						"title": "Post One"
@@ -136,9 +138,24 @@
 						"address": "post-five",
 						"title": "Post Five"
 					}]
-				},
-			});
+				});
+			} );
+
 		})( jQuery );
+	</script>
+
+	<script type="text/template" id="tmpl-placeholder">
+		<div class="placeholder placeholder--article" id="placeholder-article">
+			<div class="container">
+				<div class="placeholder__header animated">
+					<h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h1>
+				</div>
+				<div>
+					<p class="placeholder__p-1 animated">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil quas illum laboriosam debitis quae, a tempora perferendis error dolorum maiores.</p>
+					<p class="placeholder__p-2 animated">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, debitis consequatur vel accusantium, eos deserunt.</p>
+				</div>
+			</div>
+		</div>
 	</script>
 </body>
 </html>
