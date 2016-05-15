@@ -1,8 +1,8 @@
 /*
- *  jquery-boilerplate - v4.0.0
- *  A jump-start for jQuery plugins development.
+ *  KeepScrolling - v4.0.0
+ *  Infinite Scroll with History Web APIs
+ *  
  *  http://jqueryboilerplate.com
- *
  *  Made by Zeno Rocha
  *  Under MIT License
  */
@@ -104,7 +104,11 @@
 			},
 
 			getArticleAddr: function( i ) {
-				return this.getData()[ i ].address + ".html";
+				
+				var href = window.location.href;
+				var root = href.substr( 0, href.lastIndexOf( '/' ) );
+
+				return root + "/" + this.getData()[ i ].address + ".html";
 			},
 
 			getNextArticle: function() {
@@ -224,6 +228,12 @@
 						if ( articleOffset > this.threshold ) {
 							return;
 						}
+						
+						var articleFloor = Math.floor( ( article.clientHeight - ( this.threshold * 1.4 ) ) * -1 );
+
+						if ( articleOffset < articleFloor ) {
+							return;
+						}
 
 						var articleData = this.getData();
 						var articleID = $( article ).data( "article" ).id;
@@ -235,10 +245,9 @@
 							}
 						}
 
-						var articleFloor = Math.floor( ( article.clientHeight - ( this.threshold * 1.4 ) ) * -1 );
 						var articleURL = this.getArticleAddr( articleIndex );
 
-						if ( articleOffset > articleFloor && window.location.href !== articleURL ) {
+						if ( window.location.href !== articleURL ) {
 							window.History.pushState( null, articleData[ articleIndex ].title, articleURL );
 						}
 
