@@ -1,16 +1,5 @@
 @import (less) "../../bower/normalize-css/normalize.css";
 
-@brand: #d54e21;
-@primary: #4ab866;
-
-@link: #00aadc;
-
-@gray: #eeeeee;
-@gray-dark: #2e4453;
-@gray: #a8bece;
-@gray-light: #e9eff3;
-@gray-lighter: #f3f6f8;
-
 @font-face {
 	font-family:'redacted_scriptbold';
 	font-weight:normal;
@@ -132,7 +121,6 @@ pre[class*=language-] {
 .animated {
 	animation: fadeIn .386s ease infinite alternate;
 }
-
 .masthead {
 	height: 60px;
 	border-bottom: 1px solid @gray-lighter;
@@ -150,9 +138,43 @@ pre[class*=language-] {
 	color: #222;
 	font-size: 32px;
 }
+.homepage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: Tahoma, Geneva, Verdana, sans-serif;
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: Tahoma, Geneva, Verdana, sans-serif;
+		line-height:1.68;
+		margin-top: 0;
+		margin-bottom: 30px;
+	}
+	.view-the-demo {
+		display: inline-block;
+		background-color: @primary;
+		color: #fff;
+		text-decoration: none;
+		padding: 20px 30px;
+		border-radius: 4px;
+	}
+}
 .content {
 	margin-top: 60px;
 	margin-bottom: 60px;
+	.homepage & {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 .article {
 	padding-bottom: 60px;
