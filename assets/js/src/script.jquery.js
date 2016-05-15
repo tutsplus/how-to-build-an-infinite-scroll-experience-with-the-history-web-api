@@ -103,12 +103,8 @@
 				return $( this.element ).find( this.settings.article );
 			},
 
-			getArticleURL: function( i ) {
-				
-				var	root = window.location.protocol + "//" + window.location.host + "/";
-				var address = this.getData()[ i ].address;
-
-				return root + address + ".html";
+			getArticleAddr: function( i ) {
+				return this.getData()[ i ].address + ".html";
 			},
 
 			getNextArticle: function() {
@@ -121,7 +117,7 @@
 
 				for ( var i = articleData.length - 1; i >= 0; i-- ) {
 					if ( articleData[ i ].id === articlePrevID ) {
-						articlePrevURL = this.getArticleURL( i ) ;
+						articlePrevURL = this.getArticleAddr( i ) ;
 					}
 				}
 
@@ -240,7 +236,7 @@
 						}
 
 						var articleFloor = Math.floor( ( article.clientHeight - ( this.threshold * 1.4 ) ) * -1 );
-						var articleURL = this.getArticleURL( articleIndex );
+						var articleURL = this.getArticleAddr( articleIndex );
 
 						if ( articleOffset > articleFloor && window.location.href !== articleURL ) {
 							window.History.pushState( null, articleData[ articleIndex ].title, articleURL );
