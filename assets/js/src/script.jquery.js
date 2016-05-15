@@ -52,14 +52,13 @@
 		// Avoid Plugin.prototype conflicts
 		$.extend( Plugin.prototype, {
 
+			// Place initialization logic here
+			// You already have access to the DOM element and
+			// the options via the instance, e.g. this.element
+			// and this.settings
+			// you can add more functions like the one below and
+			// call them like the example bellow
 			init: function() {
-
-				// Place initialization logic here
-				// You already have access to the DOM element and
-				// the options via the instance, e.g. this.element
-				// and this.settings
-				// you can add more functions like the one below and
-				// call them like the example bellow
 
 				this.threshold = Math.ceil( window.innerHeight * 0.4 );
 				this.siteFloor = this.getSiteFloor();
@@ -68,6 +67,10 @@
 				this.scroller();
 				this.placeholder();
 			},
+
+			// Returns a function, that, as long as it continues to be invoked, will not be triggered. 
+			// The function will be called after it stops being called for N milliseconds. 
+			// If immediate is passed, trigger the function on the leading edge, instead of the trailing.
 			debouncer: function( func, wait, immediate ) {
 
 				var timeout;
@@ -95,32 +98,31 @@
 				};
 			},
 
-			getData: function() {
-				return this.settings.data;
-			},
-
+			// Find and returns a list of articles on the page.
 			getArticles: function() {
 				return $( this.element ).find( this.settings.article );
 			},
 
+			// Returns the article Address
 			getArticleAddr: function( i ) {
 				
 				var href = window.location.href;
 				var root = href.substr( 0, href.lastIndexOf( '/' ) );
 
-				return root + "/" + this.getData()[ i ].address + ".html";
+				return root + "/" + this.settings.data[ i ].address + ".html";
 			},
 
+			// Return the next article ID and URL to load.
 			getNextArticle: function() {
 
 				var $last = this.getArticles().last();
 
 				var articlePrevURL;
 				var articlePrevID = $last.data( "article" ).id - 1; // Previous ID
-				var articleData = this.getData();
+				// var articleData = this.getData();
 
-				for ( var i = articleData.length - 1; i >= 0; i-- ) {
-					if ( articleData[ i ].id === articlePrevID ) {
+				for ( var i = this.settings.data.length - 1; i >= 0; i-- ) {
+					if ( this.settings.data[ i ].id === articlePrevID ) {
 						articlePrevURL = this.getArticleAddr( i ) ;
 					}
 				}
@@ -131,6 +133,7 @@
 				};
 			},
 
+			// The site floor as a trigger to fetch new content.
 			getSiteFloor: function() {
 
 				var floor = this.settings.floor;
@@ -138,6 +141,8 @@
 					return ( !floor.jquery ) ? $( floor ) : floor;
 			},
 
+			// Append the placeholder.
+			// Placeholder is used to indicate a new post is being loaded.
 			placeholder: function() {
 
 				var tmplPlaceholder = document.getElementById( "tmpl-placeholder" );
@@ -146,6 +151,8 @@
 					$( main ).append( tmplPlaceholder );
 			},
 
+			// Detect whether the target element is visible.
+			// Currently mainly used for theh siteFloor.
 			visible: function( target ) {
 
 				if ( target instanceof jQuery ) {
@@ -160,6 +167,7 @@
 					rect.top < ( window.innerHeight || document.documentElement.clientHeight ) /*or $(window).height() */;
 			},
 
+			// Whether to proceed ( or not ) fetching a new article.
 			proceed: function() {
 
 				if ( articleFetching || articleEnding || !this.visible( this.siteFloor ) ) {
@@ -174,6 +182,7 @@
 				return true;
 			},
 
+			// Main function to fetch and append new article.
 			fetch: function() {
 
 				if ( !this.proceed() ) {
@@ -214,6 +223,7 @@
 				} );
 			},
 
+			// Change the browser history.
 			history: function() {
 
 				if ( !window.History.enabled ) {
@@ -235,12 +245,11 @@
 							return;
 						}
 
-						var articleData = this.getData();
 						var articleID = $( article ).data( "article" ).id;
 						var articleIndex;
 
-						for ( var i = articleData.length - 1; i >= 0; i-- ) {
-							if ( articleData[ i ].id === articleID ) {
+						for ( var i = this.settings.data.length - 1; i >= 0; i-- ) {
+							if ( this.settings.data[ i ].id === articleID ) {
 								articleIndex = i;
 							}
 						}
@@ -248,12 +257,13 @@
 						var articleURL = this.getArticleAddr( articleIndex );
 
 						if ( window.location.href !== articleURL ) {
-							window.History.pushState( null, articleData[ articleIndex ].title, articleURL );
+							window.History.pushState( null, this.settings.data[ articleIndex ].title, articleURL );
 						}
 
 					}.bind( this ) );
 			},
 
+			// Functions to run during the scroll.
 			scroller: function() {
 
 				window.addEventListener( "scroll", this.debouncer( function() {
