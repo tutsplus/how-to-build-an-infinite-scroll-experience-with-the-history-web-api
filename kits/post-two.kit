@@ -1,9 +1,6 @@
 <!-- $title = Post Two -->
 <!-- @include _header -->
-<article 
-	class="article" 
-	id="article-2"
-	data-article='{ "id": 2 }'>
+<article class="article" data-article-id="2">
 	<div class="container">
 		<header class="article__header">
 			<h1 class="article__headline">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h1>
@@ -50,7 +47,7 @@
 	(function() {
 		$( ".caption" )
 	    	.parentsUntil( ".page-content" )
-	        .addClass( "has-img-caption" );	
+	        .addClass( "has-img-caption" );
 	})();
 	</code>
 </pre>

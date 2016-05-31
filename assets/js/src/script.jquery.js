@@ -1,10 +1,13 @@
-/*
- *  KeepScrolling - v4.0.0
- *  Infinite Scroll with History Web APIs
- *  
- *  http://jqueryboilerplate.com
- *  Made by Zeno Rocha
- *  Under MIT License
+/**
+ * KeepScrolling - v4.0.0
+ * https://github.com/tfirdaus/web-api-history-infinite-scroll
+ * Made By Thoriq Firdaus
+ *
+ * jQuey Boilerplate
+ * http://jqueryboilerplate.com
+ * Made by Zeno Rocha
+ *
+ * Under MIT License
  */
 
 // The semi-colon before function invocation is a safety net against concatenated
@@ -68,8 +71,8 @@
 				this.placeholder();
 			},
 
-			// Returns a function, that, as long as it continues to be invoked, will not be triggered. 
-			// The function will be called after it stops being called for N milliseconds. 
+			// Returns a function, that, as long as it continues to be invoked, will not be triggered.
+			// The function will be called after it stops being called for N milliseconds.
 			// If immediate is passed, trigger the function on the leading edge, instead of the trailing.
 			debouncer: function( func, wait, immediate ) {
 
@@ -105,9 +108,9 @@
 
 			// Returns the article Address
 			getArticleAddr: function( i ) {
-				
+
 				var href = window.location.href;
-				var root = href.substr( 0, href.lastIndexOf( '/' ) );
+				var root = href.substr( 0, href.lastIndexOf( "/" ) );
 
 				return root + "/" + this.settings.data[ i ].address + ".html";
 			},
@@ -118,8 +121,8 @@
 				var $last = this.getArticles().last();
 
 				var articlePrevURL;
-				var articlePrevID = $last.data( "article" ).id - 1; // Previous ID
-				// var articleData = this.getData();
+                var articleID = $last.data( "article-id" );
+				var articlePrevID = parseInt( articleID, 10 ) - 1; // Previous ID
 
 				for ( var i = this.settings.data.length - 1; i >= 0; i-- ) {
 					if ( this.settings.data[ i ].id === articlePrevID ) {
@@ -147,7 +150,7 @@
 
 				var tmplPlaceholder = document.getElementById( "tmpl-placeholder" );
 					tmplPlaceholder = tmplPlaceholder.innerHTML;
-					
+
 					$( main ).append( tmplPlaceholder );
 			},
 
@@ -163,8 +166,8 @@
 
 				return rect.bottom > 0 &&
 					rect.right > 0 &&
-					rect.left < ( window.innerWidth || document.documentElement.clientWidth ) /*or $(window).width() */ &&
-					rect.top < ( window.innerHeight || document.documentElement.clientHeight ) /*or $(window).height() */;
+					rect.left < ( window.innerWidth || document.documentElement.clientWidth ) &&
+					rect.top < ( window.innerHeight || document.documentElement.clientHeight );
 			},
 
 			// Whether to proceed ( or not ) fetching a new article.
@@ -196,7 +199,7 @@
 					url: this.getNextArticle().url,
 					type: "GET",
 					dataType: "html",
-					beforeSend: function() {					
+					beforeSend: function() {
 						$( main ).addClass( function() {
 							articleFetching = true;
 							return "fetching";
@@ -238,14 +241,16 @@
 						if ( articleOffset > this.threshold ) {
 							return;
 						}
-						
+
 						var articleFloor = Math.floor( ( article.clientHeight - ( this.threshold * 1.4 ) ) * -1 );
 
 						if ( articleOffset < articleFloor ) {
 							return;
 						}
 
-						var articleID = $( article ).data( "article" ).id;
+						var articleID = $( article ).data( "article-id" );
+                            articleID = parseInt( articleID, 10 );
+
 						var articleIndex;
 
 						for ( var i = this.settings.data.length - 1; i >= 0; i-- ) {
