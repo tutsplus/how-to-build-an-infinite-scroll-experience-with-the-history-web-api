@@ -27,10 +27,10 @@
 
 		// Create the defaults once
 		var pluginName = "keepScrolling";
-		var	defaults = {
-				article: ".article",
-				floor: "#footer",
-				data: null
+		var defaults = {
+				article: null,
+				floor: null,
+				data: {}
 			};
 
 		var articleFetching = false;
@@ -41,7 +41,7 @@
 
 			this.element = element;
 
-			// JQuery has an extend method which merges the contents of two or
+			// JQuery has an extend mesthod which merges the contents of two or
 			// more objects, storing the result in the first object. The first object
 			// is generally empty as we don't want to alter the default options for
 			// future instances of the plugin
@@ -55,27 +55,111 @@
 		// Avoid Plugin.prototype conflicts
 		$.extend( Plugin.prototype, {
 
-			// Place initialization logic here
-			// You already have access to the DOM element and
-			// the options via the instance, e.g. this.element
-			// and this.settings
-			// you can add more functions like the one below and
-			// call them like the example bellow
+			/**
+			 * Initialize.
+			 * @return {Void}
+			 */
 			init: function() {
 
-				this.threshold = Math.ceil( window.innerHeight * 0.4 );
-				this.siteFloor = this.getSiteFloor();
+				this.roofLine = Math.ceil( window.innerHeight * 0.4 );
+				this.siteFloor = $( this.settings.floor );
+
+				this.addPlaceholder();
 
 				this.fetch();
 				this.scroller();
-				this.placeholder();
 			},
 
-			// Returns a function, that, as long as it continues to be invoked, will not be triggered.
-			// The function will be called after it stops being called for N milliseconds.
-			// If immediate is passed, trigger the function on the leading edge, instead of the trailing.
-			debouncer: function( func, wait, immediate ) {
+			/**
+			 * Find and returns a list of articles on the page.
+			 * @return {jQuery Object} List of selected articles.
+			 */
+			getArticles: function() {
+				return $( this.element ).find( this.settings.article );
+			},
 
+			/**
+			 * Returns the article Address.
+			 * @param  {Integer} i The article index.
+			 * @return {String}    The article address, e.g. post-two.html
+			 */
+			getArticleAddr: function( i ) {
+
+				var href = window.location.href;
+				var root = href.substr( 0, href.lastIndexOf( "/" ) );
+
+				return root + "/" + this.settings.data[ i ].address + ".html";
+			},
+
+			/**
+			 * Return the next article.
+			 * @return {Object} The `id` and `url` of the next article.
+			 */
+			getNextArticle: function() {
+
+				var $last = this.getArticles().last();
+
+				var articlePrevURL;
+
+				var articleID = $last.data( "article-id" );
+				var articlePrevID = parseInt( articleID, 10 ) - 1; // Previous ID
+
+				for ( var i = this.settings.data.length - 1; i >= 0; i-- ) {
+					if ( this.settings.data[ i ].id === articlePrevID ) {
+						articlePrevURL = this.getArticleAddr( i ) ;
+					}
+				}
+
+				return {
+					id: articlePrevID,
+					url: articlePrevURL
+				};
+			},
+
+			/**
+			 * Append the addPlaceholder.
+			 * Placeholder is used to indicate a new post is being loaded.
+			 * @return {Void}
+			 */
+			addPlaceholder: function() {
+
+				var tmplPlaceholder = document.getElementById( "tmpl-placeholder" );
+					 tmplPlaceholder = tmplPlaceholder.innerHTML;
+
+					$( this.element ).append( tmplPlaceholder );
+			},
+
+			/**
+			 * Detect whether the target element is visible.
+			 * http://stackoverflow.com/q/123999/
+			 *
+			 * @return {Boolean} `true` if the element in viewport, and `false` if not.
+			 */
+			isVisible: function( target ) {
+				if ( target instanceof jQuery ) {
+					target = target[ 0 ];
+				}
+
+				var rect = target.getBoundingClientRect();
+
+				return rect.bottom > 0 &&
+					rect.right > 0 &&
+					rect.left < ( window.innerWidth || document.documentElement.clientWidth ) &&
+					rect.top < ( window.innerHeight || document.documentElement.clientHeight );
+			},
+
+			/**
+			 * Returns a function, that, as long as it continues to be invoked, will not b
+			 * triggered.
+			 * The function will be called after it stops being called for N milliseconds.
+			 * If immediate is passed, trigger the function on the leading edge, instead of
+			 * the trailing.
+			 * @param  {Function} func   	  Function to debounce
+			 * @param  {Integer}  wait      The time in ms before the Function run
+			 * @param  {Boolean}  immediate
+			 * @return {Void}
+			 */
+			isDebounced: function( func, wait, immediate ) {
 				var timeout;
 
 				return function() {
@@ -101,79 +185,13 @@
 				};
 			},
 
-			// Find and returns a list of articles on the page.
-			getArticles: function() {
-				return $( this.element ).find( this.settings.article );
-			},
+			/**
+			 * Whether to proceed ( or not to ) fetching a new article.
+			 * @return {Boolean} [description]
+			 */
+			isProceed: function() {
 
-			// Returns the article Address
-			getArticleAddr: function( i ) {
-
-				var href = window.location.href;
-				var root = href.substr( 0, href.lastIndexOf( "/" ) );
-
-				return root + "/" + this.settings.data[ i ].address + ".html";
-			},
-
-			// Return the next article ID and URL to load.
-			getNextArticle: function() {
-
-				var $last = this.getArticles().last();
-
-				var articlePrevURL;
-                var articleID = $last.data( "article-id" );
-				var articlePrevID = parseInt( articleID, 10 ) - 1; // Previous ID
-
-				for ( var i = this.settings.data.length - 1; i >= 0; i-- ) {
-					if ( this.settings.data[ i ].id === articlePrevID ) {
-						articlePrevURL = this.getArticleAddr( i ) ;
-					}
-				}
-
-				return {
-					id: articlePrevID,
-					url: articlePrevURL
-				};
-			},
-
-			// The site floor as a trigger to fetch new content.
-			getSiteFloor: function() {
-
-				var floor = this.settings.floor;
-
-					return ( !floor.jquery ) ? $( floor ) : floor;
-			},
-
-			// Append the placeholder.
-			// Placeholder is used to indicate a new post is being loaded.
-			placeholder: function() {
-
-				var tmplPlaceholder = document.getElementById( "tmpl-placeholder" );
-					tmplPlaceholder = tmplPlaceholder.innerHTML;
-
-					$( main ).append( tmplPlaceholder );
-			},
-
-			// Detect whether the target element is visible.
-			// Currently mainly used for theh siteFloor.
-			visible: function( target ) {
-
-				if ( target instanceof jQuery ) {
-					target = target[ 0 ];
-				}
-
-				var rect = target.getBoundingClientRect();
-
-				return rect.bottom > 0 &&
-					rect.right > 0 &&
-					rect.left < ( window.innerWidth || document.documentElement.clientWidth ) &&
-					rect.top < ( window.innerHeight || document.documentElement.clientHeight );
-			},
-
-			// Whether to proceed ( or not ) fetching a new article.
-			proceed: function() {
-
-				if ( articleFetching || articleEnding || !this.visible( this.siteFloor ) ) {
+				if ( articleFetching || articleEnding || !this.isVisible( this.siteFloor ) ) {
 					return;
 				}
 
@@ -185,10 +203,13 @@
 				return true;
 			},
 
-			// Main function to fetch and append new article.
+			/**
+			 * Function to fetch and append a new article.
+			 * @return {Void}
+			 */
 			fetch: function() {
 
-				if ( !this.proceed() ) {
+				if ( !this.isProceed() ) {
 					return;
 				}
 
@@ -200,8 +221,8 @@
 					type: "GET",
 					dataType: "html",
 					beforeSend: function() {
+						articleFetching = true;
 						$( main ).addClass( function() {
-							articleFetching = true;
 							return "fetching";
 						} );
 					}
@@ -219,14 +240,17 @@
 						window.Prism.highlightAll();
 				} )
 				.always( function() {
+					articleFetching = false;
 					$( main ).removeClass( function() {
-						articleFetching = false;
 						return "fetching";
 					} );
 				} );
 			},
 
-			// Change the browser history.
+			/**
+			 * Change the browser history.
+			 * @return {[type]} [description]
+			 */
 			history: function() {
 
 				if ( !window.History.enabled ) {
@@ -236,20 +260,22 @@
 				this.getArticles()
 					.each( function( index, article ) {
 
-						var articleOffset = Math.floor( article.offsetTop - $( window ).scrollTop() );
+						var scrollTop = $( window ).scrollTop();
+						var articleOffset = Math.floor( article.offsetTop - scrollTop );
 
-						if ( articleOffset > this.threshold ) {
+						if ( articleOffset > this.roofLine ) {
 							return;
 						}
 
-						var articleFloor = Math.floor( ( article.clientHeight - ( this.threshold * 1.4 ) ) * -1 );
+						var floorLine = ( article.clientHeight - ( this.roofLine * 1.4 ) );
+							 floorLine = Math.floor( floorLine * -1 );
 
-						if ( articleOffset < articleFloor ) {
+						if ( articleOffset < floorLine ) {
 							return;
 						}
 
 						var articleID = $( article ).data( "article-id" );
-                            articleID = parseInt( articleID, 10 );
+                      articleID = parseInt( articleID, 10 );
 
 						var articleIndex;
 
@@ -262,18 +288,22 @@
 						var articleURL = this.getArticleAddr( articleIndex );
 
 						if ( window.location.href !== articleURL ) {
-							window.History.pushState( null, this.settings.data[ articleIndex ].title, articleURL );
+							var articleTitle = this.settings.data[ articleIndex ].title;
+							window.History.pushState( null, articleTitle, articleURL );
 						}
 
 					}.bind( this ) );
 			},
 
-			// Functions to run during the scroll.
+			/**
+			 * Functions to run during the scroll.
+			 * @return {[type]} [description]
+			 */
 			scroller: function() {
 
-				window.addEventListener( "scroll", this.debouncer( function() {
+				window.addEventListener( "scroll", this.isDebounced( function() {
 					this.fetch();
-				}, 100 ).bind( this ), false );
+				}, 300 ).bind( this ), false );
 
 				window.addEventListener( "scroll", function() {
 					this.history();

@@ -80,12 +80,14 @@
 		</footer>
 	</div>
 
-	<script src="assets/js/script.jquery.pkg.js"></script>
+	<script src="assets/js/keepscrolling.jquery.js"></script>
 	<script>
 		( function( $, undefined ) {
 
 			$( document ).ready( function() {
 				$( "#main" ).keepScrolling({
+					floor: "#footer",
+					article: ".article",
 					data : [{
 						"id": 1,
 						"address": "post-one",
@@ -109,7 +111,6 @@
 					}]
 				});
 			} );
-
 		})( jQuery );
 	</script>
 
@@ -117,11 +118,11 @@
 		<div class="placeholder placeholder--article" id="placeholder-article">
 			<div class="container">
 				<div class="placeholder__header animated">
-					<h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h1>
+					<h1></h1>
 				</div>
 				<div>
-					<p class="placeholder__p-1 animated">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil quas illum laboriosam debitis quae, a tempora perferendis error dolorum maiores.</p>
-					<p class="placeholder__p-2 animated">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium, debitis consequatur vel accusantium, eos deserunt.</p>
+					<p class="placeholder__p-1 animated"></p>
+					<p class="placeholder__p-2 animated"></p>
 				</div>
 			</div>
 		</div>

@@ -46,8 +46,8 @@
 html {
 	box-sizing: border-box;
 }
-*, 
-*:before, 
+*,
+*:before,
 *:after {
 	box-sizing: inherit;
 }
@@ -245,13 +245,24 @@ pre[class*=language-] {
 	.fetching & {
 		display: block;
 	}
+	p {
+		display: block;
+		height: 20px;
+		background: @gray-light;
+	}
 	&__header {
-		animation-delay:.1s;	
+		animation-delay:.1s;
+		h1 {
+			height: 30px;
+			background-color: @gray-light;
+		}
 	}
 	&__p-1 {
 		animation-delay:.2s;
+		width: 80%;
 	}
 	&__p-2 {
 		animation-delay:.3s;
+		width: 70%;
 	}
 }

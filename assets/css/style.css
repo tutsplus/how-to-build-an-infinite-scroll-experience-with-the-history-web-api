@@ -587,12 +587,23 @@ pre[class*=language-] {
 .fetching .placeholder {
   display: block;
 }
+.placeholder p {
+  display: block;
+  height: 20px;
+  background: #ccc;
+}
 .placeholder__header {
   animation-delay: .1s;
 }
+.placeholder__header h1 {
+  height: 30px;
+  background-color: #ccc;
+}
 .placeholder__p-1 {
   animation-delay: .2s;
+  width: 80%;
 }
 .placeholder__p-2 {
   animation-delay: .3s;
+  width: 70%;
 }
